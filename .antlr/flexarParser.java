@@ -16,7 +16,7 @@ public class flexarParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		IMPORT=1;
+		IMPORT=1, NAMESPACE=2, FUNC=3, CLASS=4, WS=5;
 	public static final int
 		RULE_start = 0;
 	private static String[] makeRuleNames() {
@@ -28,13 +28,13 @@ public class flexarParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'import'"
+			null, "'import'", "'namespace'", "'func'", "'class'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "IMPORT"
+			null, "IMPORT", "NAMESPACE", "FUNC", "CLASS", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -119,7 +119,7 @@ public class flexarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0001\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"+
+		"\u0004\u0001\u0005\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"+
 		"\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0002\u0001"+
 		"\u0000\u0000\u0000\u0002\u0003\u0005\u0001\u0000\u0000\u0003\u0001\u0001"+
 		"\u0000\u0000\u0000\u0000";

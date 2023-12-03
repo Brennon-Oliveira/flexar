@@ -16,7 +16,7 @@ public class flexarLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		IMPORT=1;
+		IMPORT=1, NAMESPACE=2, FUNC=3, CLASS=4, WS=5;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -27,20 +27,20 @@ public class flexarLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"IMPORT"
+			"IMPORT", "NAMESPACE", "FUNC", "CLASS", "WS"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'import'"
+			null, "'import'", "'namespace'", "'func'", "'class'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "IMPORT"
+			null, "IMPORT", "NAMESPACE", "FUNC", "CLASS", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -102,13 +102,35 @@ public class flexarLexer extends Lexer {
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\u0004\u0000\u0001\n\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0000\u0000\u0001\u0001\u0001\u0001\u0000\u0000\t\u0000\u0001\u0001\u0000"+
-		"\u0000\u0000\u0001\u0003\u0001\u0000\u0000\u0000\u0003\u0004\u0005i\u0000"+
-		"\u0000\u0004\u0005\u0005m\u0000\u0000\u0005\u0006\u0005p\u0000\u0000\u0006"+
-		"\u0007\u0005o\u0000\u0000\u0007\b\u0005r\u0000\u0000\b\t\u0005t\u0000"+
-		"\u0000\t\u0002\u0001\u0000\u0000\u0000\u0001\u0000\u0000";
+		"\u0004\u0000\u0005.\u0006\uffff\uffff\u0002\u0000\u0007\u0000\u0002\u0001"+
+		"\u0007\u0001\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004"+
+		"\u0007\u0004\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
+		"\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004"+
+		"\u0004\u0004)\b\u0004\u000b\u0004\f\u0004*\u0001\u0004\u0001\u0004\u0000"+
+		"\u0000\u0005\u0001\u0001\u0003\u0002\u0005\u0003\u0007\u0004\t\u0005\u0001"+
+		"\u0000\u0001\u0003\u0000\t\n\r\r  .\u0000\u0001\u0001\u0000\u0000\u0000"+
+		"\u0000\u0003\u0001\u0000\u0000\u0000\u0000\u0005\u0001\u0000\u0000\u0000"+
+		"\u0000\u0007\u0001\u0000\u0000\u0000\u0000\t\u0001\u0000\u0000\u0000\u0001"+
+		"\u000b\u0001\u0000\u0000\u0000\u0003\u0012\u0001\u0000\u0000\u0000\u0005"+
+		"\u001c\u0001\u0000\u0000\u0000\u0007!\u0001\u0000\u0000\u0000\t(\u0001"+
+		"\u0000\u0000\u0000\u000b\f\u0005i\u0000\u0000\f\r\u0005m\u0000\u0000\r"+
+		"\u000e\u0005p\u0000\u0000\u000e\u000f\u0005o\u0000\u0000\u000f\u0010\u0005"+
+		"r\u0000\u0000\u0010\u0011\u0005t\u0000\u0000\u0011\u0002\u0001\u0000\u0000"+
+		"\u0000\u0012\u0013\u0005n\u0000\u0000\u0013\u0014\u0005a\u0000\u0000\u0014"+
+		"\u0015\u0005m\u0000\u0000\u0015\u0016\u0005e\u0000\u0000\u0016\u0017\u0005"+
+		"s\u0000\u0000\u0017\u0018\u0005p\u0000\u0000\u0018\u0019\u0005a\u0000"+
+		"\u0000\u0019\u001a\u0005c\u0000\u0000\u001a\u001b\u0005e\u0000\u0000\u001b"+
+		"\u0004\u0001\u0000\u0000\u0000\u001c\u001d\u0005f\u0000\u0000\u001d\u001e"+
+		"\u0005u\u0000\u0000\u001e\u001f\u0005n\u0000\u0000\u001f \u0005c\u0000"+
+		"\u0000 \u0006\u0001\u0000\u0000\u0000!\"\u0005c\u0000\u0000\"#\u0005l"+
+		"\u0000\u0000#$\u0005a\u0000\u0000$%\u0005s\u0000\u0000%&\u0005s\u0000"+
+		"\u0000&\b\u0001\u0000\u0000\u0000\')\u0007\u0000\u0000\u0000(\'\u0001"+
+		"\u0000\u0000\u0000)*\u0001\u0000\u0000\u0000*(\u0001\u0000\u0000\u0000"+
+		"*+\u0001\u0000\u0000\u0000+,\u0001\u0000\u0000\u0000,-\u0006\u0004\u0000"+
+		"\u0000-\n\u0001\u0000\u0000\u0000\u0002\u0000*\u0001\u0006\u0000\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
