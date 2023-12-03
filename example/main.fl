@@ -1,0 +1,39 @@
+import
+    std,
+    math,
+    use List,
+    io;
+
+
+
+func gretting(name: char[dyn]){
+    std::printfln(ˋHello ${name}!ˋ)
+}
+
+func main(): int {
+    integer: int // 64bits
+    integer8bits: int8 = 1
+    integer16bits: int16 = 2
+    integer32bits: int32 = 3
+    integer32bits: int32 = 4
+    integer64bits: int64 = 5
+    unsignedInteger: uint = 6 // 64bits
+    unsignedInteger8bits: uint8 = 7
+    unsignedInteger16bits: uint16 = 8
+    unsignedInteger32bits: uint32 = 9
+    unsignedInteger64bits: uint64 = 10
+    float: float // 64bits
+    float32bits: float32 = 1.5f
+    float64bits: float64 = math::PI
+    boolean: bool
+    character: char
+    text: string
+    textWith10: string[10]
+    infereceNum: inf = 123
+    arr: [5] = {1,2,3,4,5}
+    list: list = new List({1,2,3,4,5})
+
+    print(integer)
+
+    std::printf("%s", text)
+}
