@@ -4,13 +4,15 @@ import
     use List,
     io;
 
-
-
-func gretting(name: char[dyn]){
-    std::printfln(ˋHello ${name}!ˋ)
-}
+namespace main;
 
 func main(): int {
+    print(integer)
+    text: string
+    std::printf("%s", text)
+}
+
+func variables(){
     integer: int // 64bits
     integer8bits: int8 = 1
     integer16bits: int16 = 2
@@ -30,10 +32,17 @@ func main(): int {
     text: string
     textWith10: string[10]
     infereceNum: inf = 123
-    arr: [5] = {1,2,3,4,5}
+    arr: int[5] = {1,2,3,4,5}
     list: list = new List({1,2,3,4,5})
+    setList = new Set({1,2,3,4,5})
+    map: map = {"key1": "value1", "key2": "value2"}
+    tuple: tuple = (1,2,3,4,5)
+    tupleWithNames: tuple = (a: 1, b: 2, c: 3, d: 4, e: 5)
 
-    print(integer)
+    // const
+    const integer: int = 1
+}
 
-    std::printf("%s", text)
+func gretting(name: char[size]){
+    std::println(ˋHello ${name}!ˋ)
 }

@@ -1,0 +1,5 @@
+namespace std
+
+export func printf(format: string, ...args: any[]): error {
+	return null
+}
