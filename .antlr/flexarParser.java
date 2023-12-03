@@ -1,4 +1,4 @@
-// Generated from /workspaces/script_ease/flexar.g4 by ANTLR 4.13.1
+// Generated from c:/Users/brenn/Development/flexar/Flexar.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
-public class flexarParser extends Parser {
+public class FlexarParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -72,7 +72,7 @@ public class flexarParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "flexar.g4"; }
+	public String getGrammarFileName() { return "Flexar.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -83,14 +83,14 @@ public class flexarParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public flexarParser(TokenStream input) {
+	public FlexarParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class StartContext extends ParserRuleContext {
-		public TerminalNode IMPORT() { return getToken(flexarParser.IMPORT, 0); }
+		public TerminalNode IMPORT() { return getToken(FlexarParser.IMPORT, 0); }
 		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}

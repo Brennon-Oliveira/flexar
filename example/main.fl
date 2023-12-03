@@ -36,7 +36,7 @@ func variables(){
     list: list = new List({1,2,3,4,5})
     setList = new Set({1,2,3,4,5})
     map: map = {"key1": "value1", "key2": "value2"}
-    tuple: tuple = (1,2,3,4,5)
+    tuple: tuple[int(5)] = (1,2,3,4,5)
     tupleWithNames: tuple = (a: 1, b: 2, c: 3, d: 4, e: 5)
 
     // const
