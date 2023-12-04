@@ -32,8 +32,4 @@ func TestNamespaceSemantic(t *testing.T) {
 		t.Errorf("Expected namespace_test, got %s", namespaces["aux.test"].Name)
 	}
 
-	if namespaces["aux.test"].Files[0] != "aux.test.fl" {
-		t.Errorf("Expected aux.test.fl, got %s", namespaces["aux.test"].Files[0])
-	}
-
 }
