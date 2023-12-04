@@ -161,6 +161,10 @@ IN
     : 'in'
     ;
 
+IS
+    : 'is'
+    ;
+
 // Exception
 
 TRY
@@ -275,9 +279,7 @@ CLOSE_BRACKET
 
 // Operators
 
-IS
-    : 'is'
-    ;
+
 
 // Assign
 
@@ -633,8 +635,7 @@ enum_attribute
 // Expression
 
 expression
-    : NAME
-    | class_new_instance
+    : class_new_instance
     | func_call
     | value
     | method_call
@@ -643,7 +644,12 @@ expression
     | expression_math
     | composed_value
     | and_expression
+    | expression IS type
     | expression comparision_operator expression
+    | expression QUESTION expression COLON expression
+    | expression RANGE expression
+    | (type | NAME) OPEN_PAREN expression CLOSE_PAREN
+    | NAME
     ;
 
 composed_value
@@ -690,6 +696,7 @@ not_expression
 
 // Math
 
+// parenthesis_expression
 expression_math
     : expression_math factor_operator term_math
     | term_math
@@ -715,17 +722,22 @@ shift_math
     ;
 
 unary_math
-    : before_unary | after_unary | INT_NUM
+    : before_unary | after_unary | INT_NUM | parenthesis_expression
     ;
 
 before_unary
     : INC (variable_name | INT_NUM)
     | DEC (variable_name | INT_NUM)
+    | BIT_NOT (variable_name | INT_NUM)
     ;
 
 after_unary
     : (variable_name | INT_NUM) INC
     | (variable_name | INT_NUM) DEC
+    ;
+
+parenthesis_expression
+    : OPEN_PAREN expression_math CLOSE_PAREN
     ;
 
 // Operator

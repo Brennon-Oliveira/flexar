@@ -314,20 +314,20 @@ func operations(){
     // type cast
     {
         integer: int = 1
-        float: float = 1.5f
-        integer = int(float) // 1
-        float = float(integer) // 1.0
+        floatVal: float = 1.5f
+        integer = int(floatVal) // 1
+        floatVal = float(integer) // 1.0
     }
 
     // type check
     {
         integer: int = 1
-        float: float = 1.5f
+        floatVal: float = 1.5f
         isInteger: bool = integer is int // true
-        isFloat: bool = float is float // true
+        isFloat: bool = floatVal is float // true
         isNumber: bool = integer is number // true
-        isNumber: bool = float is number // true
+        isNumber: bool = floatVal is number // true
         isString: bool = integer is string // false
-        isString: bool = float is string // false
+        isString: bool = floatVal is string // false
     }
 }
