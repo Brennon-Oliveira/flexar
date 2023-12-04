@@ -1,5 +1,5 @@
-namespace std
+namespace std;
 
-export func printf(format: string, ...args: any[]): error {
+export func printf(format: string, args: any[]...) error {
 	return null
 }

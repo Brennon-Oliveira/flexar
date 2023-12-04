@@ -481,12 +481,12 @@ program
     ;
 
 program_rule
-    : class
+    : EXPORT? (class
     | func
     | interface
     | struct
     | struct_func
-    | enum
+    | enum)
     ;
 
 // Import
@@ -651,6 +651,7 @@ expression
     | expression RANGE expression
     | (type | NAME) OPEN_PAREN expression CLOSE_PAREN
     | NAME
+    | NULL
     ;
 
 composed_value

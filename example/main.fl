@@ -2,14 +2,16 @@ import
     std,
     math,
     use List,
-    io.File::readFile
-    io.File::writeFile;
+    io.File::readFile,
+    io.File::writeFile,
+    http as httpLib;
 
-namespace main;
+namespace main.space;
 
 class Person {
     name: string
     age: int
+    readonly readonlyAttribute: string = "readonly"
 
     public Person(){}
     public Person(name: string, age: int){
@@ -17,7 +19,7 @@ class Person {
         this.age = age
     }
 
-    static public func main(){
+    public static func main(){
         person: Person = new Person("John", 20)
         person.presentation()
     }
@@ -36,7 +38,86 @@ class Person {
     }
 }
 
-func main(): int {
+abstract class AbstractClass {
+    abstract func abstractFunc()
+}
+
+class Class extends AbstractClass {
+    func abstractFunc(){
+        std::println("Hello World!")
+    }
+}
+
+interface Interface {
+    attribute: string
+    func interfaceFunc()
+}
+
+class ClassWithInterface implements Interface {
+    func interfaceFunc(){
+        std::println("Hello World!")
+    }
+}
+
+struct Struct {
+    name: string
+    age: int
+}
+
+(t *Struct) func GetName() string {
+    return t.name.teste
+}
+
+(t *Struct) func GetAge() int {
+    return t.age
+}
+
+enum Enum {
+    ONE
+    TWO
+    THREE
+}
+
+class Parent {
+    func parentFunc(){
+        std::println("Hello World!")
+    }
+}
+
+class Example extends (Parent, AbstractClass) implements Interface {
+    final func finalFunc(){
+        std::println("Hello World!")
+    }
+
+    static func staticFunc(){
+        std::println("Hello World!")
+    }
+
+    override func parentFunc(){
+        std::println("Hello World!")
+    }
+
+    protected func protectedFunc(){
+        std::println("Hello World!")
+    }
+
+    func funcWithDefaultParameter(name: string = "John"){
+        std::println(`Hello ${name}!`)
+    }
+
+    func funcWithVariadicParameter(name: string...){
+        for (index, item in arr){
+            std::println(`Hello ${name}!`)
+        }
+    }
+
+    func funcWithNamedParameter(name: string, age: int){
+        std::println(`Hello ${name}!`)
+        std::println(`I'm ${age} years old!`)
+    }
+}
+
+func main() int {
     print(integer)
     text: string
     std::printf("%s", text)
@@ -57,7 +138,7 @@ func main(): int {
 
     arr: int[5] = {1,2,3,4,5}
     for (index, item in arr){
-        if (index == 3){
+        if (item == 3){
             continue
         }
         std::println(`arr[${index}] = ${item}`)
@@ -126,15 +207,15 @@ func variables(){
     arr: int[5] = {1,2,3,4,5}
     list: list = new List({1,2,3,4,5})
     setList = new Set({1,2,3,4,5})
-    map: map = {"key1": "value1", "key2": "value2"}
-    tuple: tuple[int(5)] = (1,2,3,4,5)
+    mapVar: map = {"key1": "value1", "key2": "value2"}
+    tupleVar: tuple[int(5)] = (1,2,3,4,5)
     tupleWithNames: tuple = (a: 1, b: 2, c: 3, d: 4, e: 5)
     person: Person = new Person("John", 20)
     person.sayHello()
     person2 := new Person{}
 
     // const
-    const integer: int = 1
+    integer: const int = 1
 }
 
 func gretting(name: char[size]){
