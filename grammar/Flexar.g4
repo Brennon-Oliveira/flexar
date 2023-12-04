@@ -477,7 +477,6 @@ WS
 
 program
     : import_group* namespace program_rule*
-
     ;
 
 program_rule

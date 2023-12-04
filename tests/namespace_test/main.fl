@@ -1,0 +1,16 @@
+
+namespace main;
+
+func greet() string{
+    return "Hello World"
+}
+
+func main() int{
+
+    text := greet()
+    text2: string
+    text2 = text
+
+    return 0
+}
+

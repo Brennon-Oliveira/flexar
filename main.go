@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	parser "github.com/Brennon-Oliveira/flexar/grammar"
-	"github.com/antlr4-go/antlr/v4"
-	"io/ioutil"
+	"github.com/Brennon-Oliveira/flexar/compilation"
+	"github.com/Brennon-Oliveira/flexar/program_data"
+	"github.com/Brennon-Oliveira/flexar/utils"
 	"os"
 	"path/filepath"
 )
@@ -26,7 +26,7 @@ func main() {
 	if filepath.Ext(projectPath) != ".fl" {
 		// check if path is a directory
 		if info, err := os.Stat(projectPath); err == nil && info.IsDir() {
-			findFiles(projectPath, &files)
+			compilation.FindFiles(projectPath, &files)
 		} else {
 			fmt.Println("Invalid path")
 			return
@@ -41,34 +41,18 @@ func main() {
 	}
 
 	for _, file := range files {
-		compile(file)
+		utils.SetCurrentFile(file)
+		compilation.Compile(file)
 	}
 
-}
-
-func compile(filePath string) {
-	fmt.Printf("Compiling %s\n", filePath)
-	input, _ := antlr.NewFileStream(filePath)
-	lexer := parser.NewFlexarLexer(input)
-
-	tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-	parserInstace := parser.NewFlexarParser(tokens)
-	parserInstace.BuildParseTrees = true
-	parserInstace.Program()
-	fmt.Printf("Compiled %s\n", filePath)
+	fmt.Println("Compilation finished")
 	fmt.Println("=====================================")
-}
 
-func findFiles(path string, files *[]string) {
-	items, _ := ioutil.ReadDir(path)
-
-	for _, item := range items {
-		itemPath := filepath.Join(path, item.Name())
-		if item.IsDir() {
-			findFiles(itemPath, files)
-		} else {
-			*files = append(*files, itemPath)
+	namespaces := program_data.GetNamespaces()
+	for _, namespace := range namespaces {
+		fmt.Printf("Namespace %s: \n", namespace.Name)
+		for _, file := range namespace.Files {
+			fmt.Printf("\t%s\n", file)
 		}
 	}
-
 }
