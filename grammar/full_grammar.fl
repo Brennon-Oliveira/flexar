@@ -6,7 +6,37 @@ import
     io.File::writeFile,
     http as httpLib;
 
-namespace main;
+namespace main.space;
+
+class Person {
+    name: string
+    age: int
+    readonly readonlyAttribute: string = "readonly"
+
+    public Person(){}
+    public Person(name: string, age: int){
+        this.name = name
+        this.age = age
+    }
+
+    public static func main(){
+        person: Person = new Person("John", 20)
+        person.presentation()
+    }
+
+    public func presentation(){
+        this.sayHello()
+        this.sayAge()
+    }
+
+    private func sayHello(){
+        std::println(`Hello ${this.name}!`)
+    }
+
+    private func sayAge(){
+        std::println(`I'm ${this.age} years old!`)
+    }
+}
 
 abstract class AbstractClass {
     abstract func abstractFunc()
@@ -19,6 +49,7 @@ class Class extends AbstractClass {
 }
 
 interface Interface {
+    attribute: string
     func interfaceFunc()
 }
 
@@ -33,6 +64,14 @@ struct Struct {
     age: int
 }
 
+(t *Struct) func GetName() string {
+    return t.name.teste
+}
+
+(t *Struct) func GetAge() int {
+    return t.age
+}
+
 enum Enum {
     ONE
     TWO
@@ -45,7 +84,7 @@ class Parent {
     }
 }
 
-class Example extends Parent {
+class Example extends (Parent, AbstractClass) implements Interface {
     final func finalFunc(){
         std::println("Hello World!")
     }
@@ -67,7 +106,7 @@ class Example extends Parent {
     }
 
     func funcWithVariadicParameter(name: string...){
-        for (name in names){
+        for (index, item in arr){
             std::println(`Hello ${name}!`)
         }
     }
@@ -78,36 +117,7 @@ class Example extends Parent {
     }
 }
 
-class Person {
-    name: string
-    age: int
-
-    public Person(){}
-    public Person(name: string, age: int){
-        this.name = name
-        this.age = age
-    }
-
-    static public func main(){
-        person: Person = new Person("John", 20)
-        person.presentation()
-    }
-
-    public func presentation(){
-        this.sayHello()
-        this.sayAge()
-    }
-
-    private func sayHello(){
-        std::println(`Hello ${this.name}!`)
-    }
-
-    private func sayAge(){
-        std::println(`I'm ${this.age} years old!`)
-    }
-}
-
-func main(): int {
+func main() int {
     print(integer)
     text: string
     std::printf("%s", text)
@@ -221,6 +231,8 @@ func operations(){
         div: int = 1 / 1
         mod: int = 1 % 1
         exp: int = 1 ** 1
+        neg: int = -1
+        expression: int = 1 + 1 * 2 - 1 / 2 ^^ 2 * (1 + 1)
     }
     // logic
     {
