@@ -1,0 +1,321 @@
+import
+    std,
+    math,
+    use List,
+    io.File::readFile,
+    io.File::writeFile,
+    http as httpLib;
+
+namespace main;
+
+abstract class AbstractClass {
+    abstract func abstractFunc()
+}
+
+class Class extends AbstractClass {
+    func abstractFunc(){
+        std::println("Hello World!")
+    }
+}
+
+interface Interface {
+    func interfaceFunc()
+}
+
+class ClassWithInterface implements Interface {
+    func interfaceFunc(){
+        std::println("Hello World!")
+    }
+}
+
+struct Struct {
+    name: string
+    age: int
+}
+
+enum Enum {
+    ONE
+    TWO
+    THREE
+}
+
+class Parent {
+    func parentFunc(){
+        std::println("Hello World!")
+    }
+}
+
+class Example extends Parent {
+    final func finalFunc(){
+        std::println("Hello World!")
+    }
+
+    static func staticFunc(){
+        std::println("Hello World!")
+    }
+
+    override func parentFunc(){
+        std::println("Hello World!")
+    }
+
+    protected func protectedFunc(){
+        std::println("Hello World!")
+    }
+
+    func funcWithDefaultParameter(name: string = "John"){
+        std::println(`Hello ${name}!`)
+    }
+
+    func funcWithVariadicParameter(name: string...){
+        for (name in names){
+            std::println(`Hello ${name}!`)
+        }
+    }
+
+    func funcWithNamedParameter(name: string, age: int){
+        std::println(`Hello ${name}!`)
+        std::println(`I'm ${age} years old!`)
+    }
+}
+
+class Person {
+    name: string
+    age: int
+
+    public Person(){}
+    public Person(name: string, age: int){
+        this.name = name
+        this.age = age
+    }
+
+    static public func main(){
+        person: Person = new Person("John", 20)
+        person.presentation()
+    }
+
+    public func presentation(){
+        this.sayHello()
+        this.sayAge()
+    }
+
+    private func sayHello(){
+        std::println(`Hello ${this.name}!`)
+    }
+
+    private func sayAge(){
+        std::println(`I'm ${this.age} years old!`)
+    }
+}
+
+func main(): int {
+    print(integer)
+    text: string
+    std::printf("%s", text)
+
+    Person::main()
+
+    if (integer == 1){
+        std::println("integer is 1")
+    } elif (integer == 2){
+        std::println("integer is 2")
+    } else {
+        std::println("integer is not 1 or 2")
+    }
+
+    for (i: int = 0; i < 10; i++){
+        std::println(i)
+    }
+
+    arr: int[5] = {1,2,3,4,5}
+    for (index, item in arr){
+        if (item == 3){
+            continue
+        }
+        std::println(`arr[${index}] = ${item}`)
+    }
+
+    while (true){
+        std::println("Hello World!")
+        break
+    }
+
+    do {
+        std::println("Hello World!")
+    } while (false)
+
+    switch (integer){
+        case 1:
+            std::println("integer is 1")
+        case 2:
+            std::println("integer is 2")
+        default:
+            std::println("integer is not 1 or 2")
+    }
+
+    try {
+        std::println("Hello World!")
+    } catch (e: Exception){
+        std::println(e)
+    } finally {
+        std::println("Hello World!")
+    }
+
+    try {
+        std::println("Hello World!")
+    } catch (e: Exception){
+        std::println(e)
+    }
+
+    try {
+        std::println("Hello World!")
+    } finally {
+        std::println("Hello World!")
+    }
+
+    return 0
+}
+
+func variables(){
+    integer: int // 32bits
+    integer8bits: int8 = 1
+    integer16bits: int16 = 2
+    integer32bits: int32 = 3
+    integer64bits: int64 = 4
+    unsignedInteger: uint = 5 // 32bits
+    unsignedInteger8bits: uint8 = 6
+    unsignedInteger16bits: uint16 = 7
+    unsignedInteger32bits: uint32 = 8
+    unsignedInteger64bits: uint64 = 9
+    float: float // 32bits
+    float32bits: float32 = 1.5f
+    float64bits: float64 = math::PI
+    boolean: bool
+    character: char
+    text: string
+    textWith10: string[10]
+    infereceNum: inf = 123
+    arr: int[5] = {1,2,3,4,5}
+    list: list = new List({1,2,3,4,5})
+    setList = new Set({1,2,3,4,5})
+    map: map = {"key1": "value1", "key2": "value2"}
+    tuple: tuple[int(5)] = (1,2,3,4,5)
+    tupleWithNames: tuple = (a: 1, b: 2, c: 3, d: 4, e: 5)
+    person: Person = new Person("John", 20)
+    person.sayHello()
+    person2 := new Person{}
+
+    // const
+    const integer: int = 1
+}
+
+func gretting(name: char[size]){
+    std::println(`Hello ${name}!`)
+}
+
+func operations(){
+    // arithmetic
+    {
+        sum: int = 1 + 1
+        sub: int = 1 - 1
+        mul: int = 1 * 1
+        div: int = 1 / 1
+        mod: int = 1 % 1
+        exp: int = 1 ** 1
+    }
+    // logic
+    {
+        and: bool = true && false
+        or: bool = true || false
+        not: bool = !true
+        xor: bool = true ^^ false
+    }
+
+    // relational
+    {
+        equal: bool = 1 == 1
+        notEqual: bool = 1 != 1
+        greater: bool = 1 > 1
+        greaterOrEqual: bool = 1 >= 1
+        less: bool = 1 < 1
+        lessOrEqual: bool = 1 <= 1
+    }
+
+    // bitwise
+    {
+        and: int = 1 & 1
+        or: int = 1 | 1
+        not: int = ~1
+        xor: int = 1 ^ 1
+        leftShift: int = 1 << 1
+        rightShift: int = 1 >> 1
+    }
+
+    // assignment
+    {
+        sum: int = 1
+        sum += 1
+        sub: int = 1
+        sub -= 1
+        mul: int = 1
+        mul *= 1
+        div: int = 1
+        div /= 1
+        mod: int = 1
+        mod %= 1
+        exp: int = 1
+        exp **= 1
+        and: int = 1
+        and &= 1
+        or: int = 1
+        or |= 1
+        xor: int = 1
+        xor ^= 1
+        leftShift: int = 1
+        leftShift <<= 1
+        rightShift: int = 1
+        rightShift >>= 1
+    }
+
+    // increment
+    {
+        afterSum: int = 1
+        afterSum++
+        afterSub: int = 1
+        afterSub--
+        beforeSum: int = 1
+        ++beforeSum
+        beforeSub: int = 1
+        --beforeSub
+    }
+
+    // ternary
+    {
+        ternary: int = true ? 1 : 2
+    }
+
+    // range
+    {
+        range: int[5] = 1..5
+        rangeWithStep: int[5] = 1..5..2
+    }
+
+    // type cast
+    {
+        integer: int = 1
+        float: float = 1.5f
+        integer = int(float) // 1
+        float = float(integer) // 1.0
+    }
+
+    // type check
+    {
+        integer: int = 1
+        float: float = 1.5f
+        isInteger: bool = integer is int // true
+        isFloat: bool = float is float // true
+        isNumber: bool = integer is number // true
+        isNumber: bool = float is number // true
+        isString: bool = integer is string // false
+        isString: bool = float is string // false
+    }
+}

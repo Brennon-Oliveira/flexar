@@ -19,6 +19,10 @@ USE
     : 'use'
     ;
 
+AS
+    : 'as'
+    ;
+
 // Enum
 
 ENUM
@@ -175,13 +179,19 @@ ANY : 'any';
 
 // Text
 
+TEMPLATE_STRING
+    : '`' (ESC | ~[`\\] | '${' NAME '}')* '`'
+    ;
+
 STRING
     : '"' (ESC | ~["\\])* '"'
     ;
 
 fragment ESC
-    : '\\' [btnr"\\]
+    : '\\' [btnr`"\\]
     ;
+
+
 
 NAME
     : [a-zA-Z][a-zA-Z0-9_]*
@@ -422,8 +432,23 @@ WS
     : [ \t\r\n]+ -> skip
     ;
 
-// Parser
 
-start
-    : IMPORT
+//! Parser
+
+program
+    : import_group+
+    ;
+
+// Import
+
+import_group
+    : IMPORT import_rule
+    ;
+
+import_rule
+    : (USE? namespace_name (COMMA USE? namespace_name?)* SEMICOLON)+
+    ;
+
+namespace_name
+    : NAME (DOT NAME)* (DOUBLE_COLON NAME)? (AS NAME)?
     ;
