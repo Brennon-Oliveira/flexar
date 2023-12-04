@@ -640,9 +640,10 @@ expression
     | method_call
     | namespace_call
     | attribute_call
-    | comparison
+    | expression_math
     | composed_value
-    | range_value
+    | and_expression
+    | expression comparision_operator expression
     ;
 
 composed_value
@@ -665,47 +666,66 @@ named_tuple_value
     : OPEN_PAREN (NAME COLON expression (COMMA NAME COLON expression)*)? CLOSE_PAREN
     ;
 
-range_value
-    : expression RANGE expression
+// Boolean
+
+and_expression
+    : and_expression AND or_expression
+    | or_expression
     ;
 
-// Remove left recursion
-
-comparison
-    : bitwise (comparision_operator bitwise)*
+or_expression
+    : or_expression OR xor_expression
+    | xor_expression
     ;
 
-bitwise
-    : shift (bitwise_operator shift)*
+xor_expression
+    : xor_expression XOR not_expression
+    | not_expression
     ;
 
-shift
-    : arithmetic (shift_operator arithmetic)*
+not_expression
+    : NOT not_expression
+    | BOOLEAN
     ;
 
-arithmetic
-    : term (arithmetic_operator term)*
+// Math
+
+expression_math
+    : expression_math factor_operator term_math
+    | term_math
     ;
 
-term
-    : factor (term_operator factor)*
+term_math
+    : term_math term_operator factor_math
+    | factor_math
     ;
 
-factor
-    : power (factor_operator power)*
+factor_math
+    : factor_math EXP bitwise_math
+    | bitwise_math
     ;
 
-power
-    : unary (EXP unary)*
+bitwise_math
+    : bitwise_math bitwise_operator shift_math
+    | shift_math
     ;
 
-unary
-    : (PLUS | MINUS | NOT | BIT_NOT) unary
-    | call
+shift_math
+    : shift_math shift_operator unary_math | unary_math
     ;
 
-call
-    : primary (OPEN_PAREN func_call_params? CLOSE_PAREN | OPEN_BRACKET expression CLOSE_BRACKET)*
+unary_math
+    : before_unary | after_unary | INT_NUM
+    ;
+
+before_unary
+    : INC (variable_name | INT_NUM)
+    | DEC (variable_name | INT_NUM)
+    ;
+
+after_unary
+    : (variable_name | INT_NUM) INC
+    | (variable_name | INT_NUM) DEC
     ;
 
 // Operator
@@ -721,13 +741,6 @@ shift_operator
     | SHR
     ;
 
-arithmetic_operator
-    : PLUS
-    | MINUS
-    | MODULE
-    | DIV
-    ;
-
 term_operator
     : STAR
     | DIV
@@ -737,12 +750,6 @@ term_operator
 factor_operator
     : PLUS
     | MINUS
-    ;
-
-primary
-    : (DEC | INC)? (variable_name
-    | OPEN_PAREN expression CLOSE_PAREN
-    | value) (DEC | INC)?
     ;
 
 comparision_operator
