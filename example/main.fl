@@ -115,7 +115,7 @@ func variables(){
     unsignedInteger16bits: uint16 = 7
     unsignedInteger32bits: uint32 = 8
     unsignedInteger64bits: uint64 = 9
-    float: float // 32bits
+    floatNum: float // 32bits
     float32bits: float32 = 1.5f
     float64bits: float64 = math::PI
     boolean: bool

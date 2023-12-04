@@ -199,6 +199,7 @@ MAP : 'map';
 ERROR : 'error';
 NULL : 'null';
 ANY : 'any';
+DYN : 'dyn';
 
 // Text
 
@@ -326,6 +327,10 @@ SHL_ASSIGN
 
 SHR_ASSIGN
     : '>>='
+    ;
+
+INF_ASSIGN
+    : ':='
     ;
 
 // Compare
@@ -507,7 +512,7 @@ namespace
     ;
 
 namespace_call
-    : (namespace_name | NAME) DOUBLE_COLON func_call
+    : (namespace_name | NAME) DOUBLE_COLON (func_call | NAME)
     ;
 
 // Class
@@ -558,7 +563,7 @@ constructor
     ;
 
 class_new_instance
-    : NEW func_call
+    : NEW (func_call | NAME OPEN_BRACE (NAME ASSIGN expression (COMMA NAME ASSIGN expression)*)? CLOSE_BRACE)
     ;
 
 method_call
@@ -635,6 +640,118 @@ expression
     | method_call
     | namespace_call
     | attribute_call
+    | comparison
+    | composed_value
+    | range_value
+    ;
+
+composed_value
+    : list_value | map_value | tuple_value | named_tuple_value
+    ;
+
+list_value
+    : OPEN_BRACE (expression (COMMA expression)*)? CLOSE_BRACE
+    ;
+
+map_value
+    : OPEN_BRACE (expression COLON expression (COMMA expression COLON expression)*)? CLOSE_BRACE
+    ;
+
+tuple_value
+    : OPEN_PAREN (expression (COMMA expression)*)? CLOSE_PAREN
+    ;
+
+named_tuple_value
+    : OPEN_PAREN (NAME COLON expression (COMMA NAME COLON expression)*)? CLOSE_PAREN
+    ;
+
+range_value
+    : expression RANGE expression
+    ;
+
+// Remove left recursion
+
+comparison
+    : bitwise (comparision_operator bitwise)*
+    ;
+
+bitwise
+    : shift (bitwise_operator shift)*
+    ;
+
+shift
+    : arithmetic (shift_operator arithmetic)*
+    ;
+
+arithmetic
+    : term (arithmetic_operator term)*
+    ;
+
+term
+    : factor (term_operator factor)*
+    ;
+
+factor
+    : power (factor_operator power)*
+    ;
+
+power
+    : unary (EXP unary)*
+    ;
+
+unary
+    : (PLUS | MINUS | NOT | BIT_NOT) unary
+    | call
+    ;
+
+call
+    : primary (OPEN_PAREN func_call_params? CLOSE_PAREN | OPEN_BRACKET expression CLOSE_BRACKET)*
+    ;
+
+// Operator
+
+bitwise_operator
+    : BIT_AND
+    | BIT_OR
+    | BIT_XOR
+    ;
+
+shift_operator
+    : SHL
+    | SHR
+    ;
+
+arithmetic_operator
+    : PLUS
+    | MINUS
+    | MODULE
+    | DIV
+    ;
+
+term_operator
+    : STAR
+    | DIV
+    | MODULE
+    ;
+
+factor_operator
+    : PLUS
+    | MINUS
+    ;
+
+primary
+    : (DEC | INC)? (variable_name
+    | OPEN_PAREN expression CLOSE_PAREN
+    | value) (DEC | INC)?
+    ;
+
+comparision_operator
+    : EQUAL
+    | NOT_EQUAL
+    | LESS
+    | LESS_EQUAL
+    | GREATER
+    | GREATER_EQUAL
     ;
 
 value
@@ -649,7 +766,21 @@ statement
     | expression
     | return_statement
     | for_statement
+    | if_statement
+    | while_statement
+    | do_while_statement
+    | switch_statement
+    | try_statement
+    | new_scope
+    | BREAK
+    | CONTINUE
     ;
+
+new_scope
+    : OPEN_BRACE statement* CLOSE_BRACE
+    ;
+
+// For statement
 
 for_statement
     : FOR OPEN_PAREN for_rule CLOSE_PAREN OPEN_BRACE statement* CLOSE_BRACE
@@ -666,6 +797,56 @@ for_in
 
 full_for
     : variable_declaration SEMICOLON expression? SEMICOLON expression?
+    ;
+
+// While statement
+
+while_statement
+    : WHILE OPEN_PAREN expression CLOSE_PAREN OPEN_BRACE statement* CLOSE_BRACE
+    ;
+
+do_while_statement
+    : DO OPEN_BRACE statement* CLOSE_BRACE WHILE OPEN_PAREN expression CLOSE_PAREN
+    ;
+
+// Switch statement
+
+switch_statement
+    : SWITCH OPEN_PAREN expression CLOSE_PAREN OPEN_BRACE switch_case* CLOSE_BRACE
+    ;
+
+switch_case
+    : CASE expression COLON statement*
+    | DEFAULT COLON statement*
+    ;
+
+// Try statement
+
+try_statement
+    : TRY OPEN_BRACE statement* CLOSE_BRACE catch_statement? finally_statement?
+    ;
+
+catch_statement
+    : CATCH OPEN_PAREN NAME COLON NAME CLOSE_PAREN OPEN_BRACE statement* CLOSE_BRACE
+    ;
+
+finally_statement
+    : FINALLY OPEN_BRACE statement* CLOSE_BRACE
+    ;
+
+
+// If statement
+
+if_statement
+    : IF OPEN_PAREN expression CLOSE_PAREN OPEN_BRACE statement* CLOSE_BRACE elif_statement* else_statement?
+    ;
+
+elif_statement
+    : ELIF OPEN_PAREN expression CLOSE_PAREN OPEN_BRACE statement* CLOSE_BRACE
+    ;
+
+else_statement
+    : ELSE OPEN_BRACE statement* CLOSE_BRACE
     ;
 
 // Function
@@ -735,22 +916,31 @@ assing
     | XOR_ASSIGN
     | SHL_ASSIGN
     | SHR_ASSIGN
+    | INF_ASSIGN
     ;
 
 // Type
 
 type
+    : CONST? final_type (
+        QUESTION
+        | OPEN_BRACKET (INT_NUM | DYN | NAME)? CLOSE_BRACKET
+        | OPEN_BRACKET final_type OPEN_PAREN (INT_NUM | DYN | NAME)? CLOSE_PAREN CLOSE_BRACKET
+        )*
+    ;
+
+final_type
     : INT | INT8 | INT16 | INT32 | INT64
-    | UINT | UINT8 | UINT16 | UINT32 | UINT64
-    | FLOAT | FLOAT32 | FLOAT64
-    | BOOL
-    | CHAR
-    | STRING
-    | INF
-    | TUPLE
-    | MAP
-    | ERROR
-    | NULL
-    | ANY
-    | NAME
+          | UINT | UINT8 | UINT16 | UINT32 | UINT64
+          | FLOAT | FLOAT32 | FLOAT64
+          | BOOL
+          | CHAR
+          | STRING
+          | INF
+          | TUPLE
+          | MAP
+          | ERROR
+          | NULL
+          | ANY
+          | NAME
     ;
