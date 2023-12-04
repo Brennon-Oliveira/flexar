@@ -637,6 +637,7 @@ enum_attribute
 expression
     : class_new_instance
     | func_call
+    | anonymous_func
     | value
     | method_call
     | namespace_call
@@ -722,18 +723,22 @@ shift_math
     ;
 
 unary_math
-    : before_unary | after_unary | INT_NUM | parenthesis_expression
+    : before_unary | after_unary | math_value | parenthesis_expression
     ;
 
 before_unary
-    : INC (variable_name | INT_NUM)
-    | DEC (variable_name | INT_NUM)
-    | BIT_NOT (variable_name | INT_NUM)
+    : INC math_value
+    | DEC math_value
+    | BIT_NOT math_value
     ;
 
 after_unary
-    : (variable_name | INT_NUM) INC
-    | (variable_name | INT_NUM) DEC
+    : math_value INC
+    | math_value DEC
+    ;
+
+math_value
+    : variable_name | INT_NUM
     ;
 
 parenthesis_expression
@@ -783,7 +788,6 @@ statement
     : variable_declaration
     | variable_assign
     | expression
-    | return_statement
     | for_statement
     | if_statement
     | while_statement
@@ -878,8 +882,20 @@ func
     : FUNC NAME OPEN_PAREN func_param? CLOSE_PAREN func_return? func_body
     ;
 
+anonymous_func
+    : FUNC OPEN_PAREN func_param? CLOSE_PAREN func_return? ARROW func_body
+    ;
+
 func_param
     : func_param_rule (COMMA func_param_rule)*
+    ;
+
+func_callback
+    : FUNC OPEN_PAREN func_param_callback? CLOSE_PAREN func_return?
+    ;
+
+func_param_callback
+    : type (COMMA type)*
     ;
 
 func_param_rule
@@ -899,11 +915,13 @@ func_return
     ;
 
 func_body
-    : OPEN_BRACE statement* CLOSE_BRACE
+    : OPEN_BRACE statement* return_statement? CLOSE_BRACE
     ;
 
 return_statement
-    : RETURN expression
+    : RETURN (
+        expression (COMMA expression)*
+        )
     ;
 
 // Variable
@@ -941,11 +959,13 @@ assing
 // Type
 
 type
-    : CONST? final_type (
+    : (CONST? final_type (
         QUESTION
         | OPEN_BRACKET (INT_NUM | DYN | NAME)? CLOSE_BRACKET
         | OPEN_BRACKET final_type OPEN_PAREN (INT_NUM | DYN | NAME)? CLOSE_PAREN CLOSE_BRACKET
-        )*
+        )*)
+    // callback
+    | func_callback
     ;
 
 final_type

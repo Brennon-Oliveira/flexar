@@ -331,3 +331,23 @@ func operations(){
         isString: bool = floatVal is string // false
     }
 }
+
+func callback(callback: func(int, int) int){
+    teste := callback(1, 2)
+    print(teste)
+}
+
+func testCallback(){
+    callback(func(a: int, b: int) int -> {
+        return a
+    }, 1)
+
+    callbackVar: func(int, int) int = func(a: int, b: int) int ->{
+        return a + b
+    }
+    callback(callbackVar, 1)
+}
+
+func returnTwoValues() (int, int){
+    return 1, 2
+}
