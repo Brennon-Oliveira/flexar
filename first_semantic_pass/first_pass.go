@@ -17,8 +17,24 @@ func Visit(ctx antlr.ParseTree) {
 }
 
 func (v *FirstPassVisitor) VisitProgram(ctx *parser.ProgramContext) interface{} {
-	namespace := ctx.Namespace().Namespace_name().GetText()
+	v.VisitNamespace(ctx.Namespace().(*parser.NamespaceContext))
+	for _, programRule := range ctx.AllProgram_rule() {
+		v.VisitProgramRule(programRule.(*parser.Program_ruleContext))
+	}
+	return nil
+}
+
+func (v *FirstPassVisitor) VisitProgramRule(ctx *parser.Program_ruleContext) interface{} {
+	if ctx.Func_() != nil {
+		v.VisitFunc(ctx.Func_().(*parser.FuncContext), ctx.EXPORT() != nil)
+	}
+	return nil
+}
+
+func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) interface{} {
+	namespace := ctx.Namespace_name().GetText()
 	program_data.AddFileToNamespace(namespace, utils.GetCurrentFile())
+	utils.SetCurrentNamespace(namespace)
 
 	return nil
 }

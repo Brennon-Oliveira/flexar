@@ -5,6 +5,10 @@ func greet() string{
     return "Hello World"
 }
 
+func greet2(param: string, param2: int) int{
+    return 0
+}
+
 func main() int{
 
     text := greet()

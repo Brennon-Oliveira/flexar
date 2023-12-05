@@ -9,3 +9,13 @@ func GetCurrentFile() string {
 func SetCurrentFile(file string) {
 	currentFile = file
 }
+
+var currentNamespace string
+
+func GetCurrentNamespace() string {
+	return currentNamespace
+}
+
+func SetCurrentNamespace(namespace string) {
+	currentNamespace = namespace
+}

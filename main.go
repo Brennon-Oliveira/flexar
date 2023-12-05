@@ -51,8 +51,19 @@ func main() {
 	namespaces := program_data.GetNamespaces()
 	for _, namespace := range namespaces {
 		fmt.Printf("Namespace %s: \n", namespace.Name)
+		fmt.Println("Files:")
 		for _, file := range namespace.Files {
 			fmt.Printf("\t%s\n", file)
+		}
+		fmt.Println("Functions:")
+		for _, function := range namespace.Functions {
+			fmt.Printf("\t%s\n", function.Name)
+			for _, param := range function.Params {
+				fmt.Printf("\t\t%s %s\n", param.Name, param.Type)
+			}
+			for _, ret := range function.Returns {
+				fmt.Printf("\t\t%s\n", ret)
+			}
 		}
 	}
 }
