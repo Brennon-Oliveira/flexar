@@ -38,3 +38,11 @@ func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) interfac
 
 	return nil
 }
+
+func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext) interface{} {
+
+	className := ctx.NAME().GetText()
+	program_data.AddClass(className, utils.GetCurrentNamespace(), utils.GetCurrentFile())
+
+	return nil
+}

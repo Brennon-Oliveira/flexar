@@ -65,5 +65,24 @@ func main() {
 				fmt.Printf("\t\t%s\n", ret)
 			}
 		}
+
+		fmt.Println("Classes:")
+		for _, class := range namespace.Classes {
+			fmt.Printf("\t%s\n", class.Name)
+			fmt.Println("\t\tAttributes:")
+			for _, attr := range class.Attributes {
+				fmt.Printf("\t\t\t%s %s\n", attr.Name, attr.Type)
+			}
+			fmt.Println("\t\tMethods:")
+			for _, method := range class.Methods {
+				fmt.Printf("\t\t\t%s\n", method.Name)
+				for _, param := range method.Params {
+					fmt.Printf("\t\t\t\t%s %s\n", param.Name, param.Type)
+				}
+				for _, ret := range method.Returns {
+					fmt.Printf("\t\t\t\t%s\n", ret)
+				}
+			}
+		}
 	}
 }

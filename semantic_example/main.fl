@@ -1,6 +1,36 @@
 
 namespace main;
 
+class Person {
+    name: string
+    age: int
+    readonly readonlyAttribute: string = "readonly"
+
+    public Person(){}
+    public Person(name: string, age: int){
+        this.name = name
+        this.age = age
+    }
+
+    public static func main(){
+        person: Person = new Person("John", 20)
+        person.presentation()
+    }
+
+    public func presentation(){
+        this.sayHello()
+        this.sayAge()
+    }
+
+    private func sayHello(){
+        std::println(`Hello ${this.name}!`)
+    }
+
+    private func sayAge(){
+        std::println(`I'm ${this.age} years old!`)
+    }
+}
+
 func greet() string{
     return "Hello World"
 }
