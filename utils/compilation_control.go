@@ -19,3 +19,13 @@ func GetCurrentNamespace() string {
 func SetCurrentNamespace(namespace string) {
 	currentNamespace = namespace
 }
+
+var currentClass string
+
+func GetCurrentClass() string {
+	return currentClass
+}
+
+func SetCurrentClass(class string) {
+	currentClass = class
+}

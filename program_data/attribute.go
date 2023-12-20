@@ -1,9 +1,16 @@
 package program_data
 
+import "github.com/Brennon-Oliveira/flexar/utils"
+
 type Attribute struct {
-	Name      string
-	Type      string
-	modifiers []string
+	Name            string
+	Type            string
+	Overriden       bool
+	Abstract        bool
+	Readonly        bool
+	PrivacyModifier utils.PrivacyModifier
+	Static          bool
+	Final           bool
 }
 
 func AddAttributeToClass(namespace string, class string, attribute Attribute) {
