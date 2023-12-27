@@ -10,6 +10,7 @@ namespace main.space;
 
 class Person {
     name: string
+    
     age: int
     readonly readonlyAttribute: string = "readonly"
 
