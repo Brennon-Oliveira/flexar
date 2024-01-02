@@ -13,19 +13,16 @@ type Attribute struct {
 	Final           bool
 }
 
-func AddAttributeToClass(namespace string, class string, attribute Attribute) {
-	namespaces[namespace].Classes[class].Attributes[attribute.Name] = attribute
+func (c *Class) AddAttribute(attribute *Attribute) *Attribute {
+	c.Attributes[attribute.Name] = attribute
+	return attribute
 }
 
-func GetAttribute(namespace string, class string, name string) Attribute {
-	return namespaces[namespace].Classes[class].Attributes[name]
+func (c *Class) GetAttribute(name string) *Attribute {
+	return c.Attributes[name]
 }
 
-func ExistsAttribute(namespace string, class string, name string) bool {
-	_, ok := namespaces[namespace].Classes[class].Attributes[name]
+func (c *Class) ExistsAttribute(name string) bool {
+	_, ok := c.Attributes[name]
 	return ok
-}
-
-func GetAttributes(namespace string, class string) map[string]Attribute {
-	return namespaces[namespace].Classes[class].Attributes
 }

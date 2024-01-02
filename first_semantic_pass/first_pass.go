@@ -17,40 +17,40 @@ func Visit(ctx antlr.ParseTree) {
 }
 
 func (v *FirstPassVisitor) VisitProgram(ctx *parser.ProgramContext) interface{} {
-	v.VisitNamespace(ctx.Namespace().(*parser.NamespaceContext))
+	namespace := v.VisitNamespace(ctx.Namespace().(*parser.NamespaceContext))
 	for _, programRule := range ctx.AllProgram_rule() {
-		v.VisitProgramRule(programRule.(*parser.Program_ruleContext))
+		v.VisitProgramRule(programRule.(*parser.Program_ruleContext), namespace)
 	}
 	return nil
 }
 
-func (v *FirstPassVisitor) VisitProgramRule(ctx *parser.Program_ruleContext) interface{} {
+func (v *FirstPassVisitor) VisitProgramRule(ctx *parser.Program_ruleContext, namespace *program_data.Namespace) interface{} {
 	if ctx.Func_() != nil {
-		v.VisitFunc(ctx.Func_().(*parser.FuncContext), ctx.EXPORT() != nil)
+		v.VisitFunc(ctx.Func_().(*parser.FuncContext), ctx.EXPORT() != nil, namespace)
 	}
 	if ctx.Class() != nil {
-		v.VisitClass(ctx.Class().(*parser.ClassContext))
+		v.VisitClass(ctx.Class().(*parser.ClassContext), namespace)
 	}
 	return nil
 }
 
-func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) interface{} {
-	namespace := ctx.Namespace_name().GetText()
-	program_data.AddFileToNamespace(namespace, utils.GetCurrentFile())
-	utils.SetCurrentNamespace(namespace)
+func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) *program_data.Namespace {
+	namespace := program_data.GetNamespace(ctx.Namespace_name().GetText())
+	namespace.AddFile(utils.GetCurrentFile())
 
-	return nil
+	return namespace
 }
 
-func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext) interface{} {
+func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *program_data.Namespace) interface{} {
 	className := ctx.NAME().GetText()
-	program_data.AddClass(className, utils.GetCurrentNamespace(), utils.GetCurrentFile())
 
-	utils.SetCurrentClass(className)
+	namespace := &program_data.Namespace{}
+	namespace.AddFile("arquivo") // Isso deve funcionar
+	namespace.AddClass("class")
 
 	for _, classRule := range ctx.Class_body().AllClass_body_rule() {
 		if classRule.(*parser.Class_body_ruleContext).Class_attribute() != nil {
-			v.VisitAttribute(classRule.(*parser.Class_body_ruleContext).Class_attribute().(*parser.Class_attributeContext))
+			v.VisitAttribute(classRule.(*parser.Class_body_ruleContext).Class_attribute().(*parser.Class_attributeContext), class)
 		}
 	}
 

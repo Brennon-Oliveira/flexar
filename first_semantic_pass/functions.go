@@ -6,11 +6,11 @@ import (
 	"github.com/Brennon-Oliveira/flexar/utils"
 )
 
-func (v *FirstPassVisitor) VisitFunc(ctx *parser.FuncContext, exported bool) interface{} {
+func (v *FirstPassVisitor) VisitFunc(ctx *parser.FuncContext, exported bool, namespace *program_data.Namespace) interface{} {
 	name := ctx.NAME().GetText()
 	var params []program_data.FunctionParam
 
-	if program_data.ExistsFunction(utils.GetCurrentNamespace(), name) {
+	if namespace.ExistsFunction(name) {
 		utils.SemanticError(ctx.NAME().GetSymbol().GetLine(), "Function "+name+" already exists")
 	}
 

@@ -10,23 +10,20 @@ type FunctionParam struct {
 type Function struct {
 	Name     string
 	Returns  []string
-	Params   []FunctionParam
+	Params   []*FunctionParam
 	Exported bool
 }
 
-func AddFunctionToNamespace(namespace string, function Function) {
-	namespaces[namespace].Functions[function.Name] = function
+func (n *Namespace) AddFunction(function *Function) *Function {
+	n.Functions[function.Name] = function
+	return function
 }
 
-func GetFunction(namespace string, name string) Function {
-	return namespaces[namespace].Functions[name]
+func (n *Namespace) GetFunction(name string) *Function {
+	return n.Functions[name]
 }
 
-func ExistsFunction(namespace string, name string) bool {
-	_, ok := namespaces[namespace].Functions[name]
+func (n *Namespace) ExistsFunction(name string) bool {
+	_, ok := n.Functions[name]
 	return ok
-}
-
-func GetFunctions(namespace string) map[string]Function {
-	return namespaces[namespace].Functions
 }
