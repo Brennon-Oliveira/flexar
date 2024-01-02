@@ -8,14 +8,14 @@ import (
 
 func (v *FirstPassVisitor) VisitFunc(ctx *parser.FuncContext, exported bool, namespace *program_data.Namespace) interface{} {
 	name := ctx.NAME().GetText()
-	var params []program_data.FunctionParam
+	var params []*program_data.FunctionParam
 
 	if namespace.ExistsFunction(name) {
 		utils.SemanticError(ctx.NAME().GetSymbol().GetLine(), "Function "+name+" already exists")
 	}
 
 	if ctx.Func_param() != nil {
-		params = v.VisitFuncParam(ctx.Func_param().(*parser.Func_paramContext)).([]program_data.FunctionParam)
+		params = v.VisitFuncParam(ctx.Func_param().(*parser.Func_paramContext))
 	}
 
 	var returns []string
@@ -30,13 +30,13 @@ func (v *FirstPassVisitor) VisitFunc(ctx *parser.FuncContext, exported bool, nam
 		Params:  params,
 	}
 
-	program_data.AddFunctionToNamespace(utils.GetCurrentNamespace(), function)
+	namespace.AddFunction(&function)
 
 	return nil
 }
 
-func (v *FirstPassVisitor) VisitFuncParam(ctx *parser.Func_paramContext) interface{} {
-	var params []program_data.FunctionParam
+func (v *FirstPassVisitor) VisitFuncParam(ctx *parser.Func_paramContext) []*program_data.FunctionParam {
+	var params []*program_data.FunctionParam
 	for index, param := range ctx.AllFunc_param_rule() {
 		newParam := v.VisitParamRule(param.(*parser.Func_param_ruleContext), index)
 		// already in params
@@ -46,7 +46,7 @@ func (v *FirstPassVisitor) VisitFuncParam(ctx *parser.Func_paramContext) interfa
 			}
 		}
 
-		params = append(params, newParam)
+		params = append(params, &newParam)
 	}
 	return params
 }

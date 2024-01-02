@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/Brennon-Oliveira/flexar/compilation"
 	"github.com/Brennon-Oliveira/flexar/program_data"
 	"github.com/Brennon-Oliveira/flexar/utils"
-	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -71,7 +72,7 @@ func main() {
 			fmt.Printf("\t%s\n", class.Name)
 			fmt.Println("\t\tAttributes:")
 			for _, attr := range class.Attributes {
-				fmt.Printf("\t\t\t%s %s\n", attr.Name, attr.Type)
+				fmt.Printf("\t\t\t%s\n", attr.GetString())
 			}
 			fmt.Println("\t\tMethods:")
 			for _, method := range class.Methods {

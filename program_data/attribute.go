@@ -1,6 +1,10 @@
 package program_data
 
-import "github.com/Brennon-Oliveira/flexar/utils"
+import (
+	"fmt"
+
+	"github.com/Brennon-Oliveira/flexar/utils"
+)
 
 type Attribute struct {
 	Name            string
@@ -25,4 +29,29 @@ func (c *Class) GetAttribute(name string) *Attribute {
 func (c *Class) ExistsAttribute(name string) bool {
 	_, ok := c.Attributes[name]
 	return ok
+}
+
+func (a *Attribute) GetString() string {
+	str := ""
+	if a.Readonly {
+		str += "readonly "
+	}
+	if a.Overriden {
+		str += "override "
+	}
+	if a.Abstract {
+		str += "abstract "
+	}
+	str += fmt.Sprintf("%d", a.PrivacyModifier)
+	if a.Static {
+		str += " static"
+	}
+	if a.Final {
+		str += " final"
+	}
+	str += fmt.Sprintf(" %s", a.Name)
+	if a.Type != "" {
+		str += fmt.Sprintf(": %s", a.Type)
+	}
+	return str
 }

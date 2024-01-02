@@ -36,6 +36,7 @@ func (v *FirstPassVisitor) VisitProgramRule(ctx *parser.Program_ruleContext, nam
 
 func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) *program_data.Namespace {
 	namespace := program_data.GetNamespace(ctx.Namespace_name().GetText())
+
 	namespace.AddFile(utils.GetCurrentFile())
 
 	return namespace
@@ -44,9 +45,7 @@ func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) *program
 func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *program_data.Namespace) interface{} {
 	className := ctx.NAME().GetText()
 
-	namespace := &program_data.Namespace{}
-	namespace.AddFile("arquivo") // Isso deve funcionar
-	namespace.AddClass("class")
+	class := namespace.AddClass(className)
 
 	for _, classRule := range ctx.Class_body().AllClass_body_rule() {
 		if classRule.(*parser.Class_body_ruleContext).Class_attribute() != nil {
@@ -57,10 +56,27 @@ func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *progr
 	return nil
 }
 
-func (v *FirstPassVisitor) VisitAttribute(ctx *parser.Class_attributeContext) interface{} {
+func (v *FirstPassVisitor) VisitAttribute(ctx *parser.Class_attributeContext, class *program_data.Class) interface{} {
 	attributeName, attributeType := v.VisitVariableDeclaration(ctx.Variable_declaration().(*parser.Variable_declarationContext))
 
-	program_data.AddAttributeToClass(utils.GetCurrentNamespace(), utils.GetCurrentClass(), program_data.Attribute{Name: attributeName, Type: attributeType})
+	attribute := program_data.Attribute{
+		Name:      attributeName,
+		Type:      attributeType,
+		Readonly:  ctx.Class_modifier().READONLY() != nil,
+		Overriden: ctx.Class_modifier().OVERRIDE() != nil,
+		Abstract:  ctx.Class_modifier().ABSTRACT() != nil,
+		Static:    ctx.Class_modifier().STATIC() != nil,
+		Final:     ctx.Class_modifier().FINAL() != nil,
+	}
+
+	if ctx.Class_modifier().Privacy_modifier() != nil {
+		attribute.PrivacyModifier = utils.PrivacyModifiers[v.VisitPrivacyModifier(ctx.Class_modifier().Privacy_modifier().(*parser.Privacy_modifierContext))]
+	} else {
+		attribute.PrivacyModifier = utils.PrivacyModifiers["public"]
+	}
+
+	class.AddAttribute(&attribute)
+
 	return nil
 }
 
@@ -69,4 +85,14 @@ func (v *FirstPassVisitor) VisitVariableDeclaration(ctx *parser.Variable_declara
 	variableType = ctx.Type_().GetText()
 
 	return
+}
+
+func (v *FirstPassVisitor) VisitPrivacyModifier(ctx *parser.Privacy_modifierContext) string {
+	if ctx.PRIVATE() != nil {
+		return "private"
+	}
+	if ctx.PROTECTED() != nil {
+		return "protected"
+	}
+	return "public"
 }

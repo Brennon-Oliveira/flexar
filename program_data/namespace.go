@@ -10,12 +10,15 @@ type Namespace struct {
 func GetNamespace(name string) *Namespace {
 	n, ok := namespaces[name]
 	if !ok {
-		return &Namespace{
+		namespace := Namespace{
 			Name:      name,
 			Files:     []string{},
 			Functions: map[string]*Function{},
 			Classes:   map[string]*Class{},
 		}
+		namespaces[name] = &namespace
+
+		return &namespace
 	}
 
 	return n
