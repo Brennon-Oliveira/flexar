@@ -2,11 +2,13 @@ package compilation
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
 	"github.com/Brennon-Oliveira/flexar/first_semantic_pass"
 	parser "github.com/Brennon-Oliveira/flexar/grammar"
 	"github.com/antlr4-go/antlr/v4"
-	"io/ioutil"
-	"path/filepath"
 )
 
 func Compile(filePath string) {
@@ -18,6 +20,9 @@ func Compile(filePath string) {
 	parserInstace := parser.NewFlexarParser(tokens)
 	parserInstace.BuildParseTrees = true
 	tree := parserInstace.Program()
+	if parserInstace.HasError() {
+		os.Exit(0)
+	}
 	first_semantic_pass.Visit(tree)
 	fmt.Printf("Compiled %s\n", filePath)
 	fmt.Println("=====================================")

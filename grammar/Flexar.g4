@@ -530,13 +530,7 @@ class_implements
     ;
 
 class_body
-    : OPEN_BRACE class_body_rule* CLOSE_BRACE
-    ;
-
-class_body_rule
-    : class_attribute
-    | constructor
-    | class_method
+    : OPEN_BRACE class_attribute* constructor* class_method* CLOSE_BRACE
     ;
 
 class_attribute

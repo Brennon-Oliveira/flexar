@@ -11,7 +11,7 @@ func (v *FirstPassVisitor) VisitFunc(ctx *parser.FuncContext, exported bool, nam
 	var params []*program_data.FunctionParam
 
 	if namespace.ExistsFunction(name) {
-		utils.SemanticError(ctx.NAME().GetSymbol().GetLine(), "Function "+name+" already exists")
+		utils.SemanticError(ctx.NAME().GetSymbol().GetLine(), "Function "+name+" already exists in namespace "+namespace.Name)
 	}
 
 	if ctx.Func_param() != nil {

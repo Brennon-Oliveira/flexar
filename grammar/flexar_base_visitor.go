@@ -1,4 +1,4 @@
-// Code generated from .//grammar//Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./grammar/Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Flexar
 
@@ -53,10 +53,6 @@ func (v *BaseFlexarVisitor) VisitClass_implements(ctx *Class_implementsContext) 
 }
 
 func (v *BaseFlexarVisitor) VisitClass_body(ctx *Class_bodyContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseFlexarVisitor) VisitClass_body_rule(ctx *Class_body_ruleContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

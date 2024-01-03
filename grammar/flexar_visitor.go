@@ -1,4 +1,4 @@
-// Code generated from .//grammar//Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./grammar/Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Flexar
 
@@ -43,9 +43,6 @@ type FlexarVisitor interface {
 
 	// Visit a parse tree produced by FlexarParser#class_body.
 	VisitClass_body(ctx *Class_bodyContext) interface{}
-
-	// Visit a parse tree produced by FlexarParser#class_body_rule.
-	VisitClass_body_rule(ctx *Class_body_ruleContext) interface{}
 
 	// Visit a parse tree produced by FlexarParser#class_attribute.
 	VisitClass_attribute(ctx *Class_attributeContext) interface{}

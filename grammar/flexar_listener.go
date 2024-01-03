@@ -1,4 +1,4 @@
-// Code generated from .//grammar//Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./grammar/Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Flexar
 
@@ -43,9 +43,6 @@ type FlexarListener interface {
 
 	// EnterClass_body is called when entering the class_body production.
 	EnterClass_body(c *Class_bodyContext)
-
-	// EnterClass_body_rule is called when entering the class_body_rule production.
-	EnterClass_body_rule(c *Class_body_ruleContext)
 
 	// EnterClass_attribute is called when entering the class_attribute production.
 	EnterClass_attribute(c *Class_attributeContext)
@@ -325,9 +322,6 @@ type FlexarListener interface {
 
 	// ExitClass_body is called when exiting the class_body production.
 	ExitClass_body(c *Class_bodyContext)
-
-	// ExitClass_body_rule is called when exiting the class_body_rule production.
-	ExitClass_body_rule(c *Class_body_ruleContext)
 
 	// ExitClass_attribute is called when exiting the class_attribute production.
 	ExitClass_attribute(c *Class_attributeContext)

@@ -1,4 +1,4 @@
-// Code generated from .//grammar//Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./grammar/Flexar.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Flexar
 
@@ -92,12 +92,6 @@ func (s *BaseFlexarListener) EnterClass_body(ctx *Class_bodyContext) {}
 
 // ExitClass_body is called when production class_body is exited.
 func (s *BaseFlexarListener) ExitClass_body(ctx *Class_bodyContext) {}
-
-// EnterClass_body_rule is called when production class_body_rule is entered.
-func (s *BaseFlexarListener) EnterClass_body_rule(ctx *Class_body_ruleContext) {}
-
-// ExitClass_body_rule is called when production class_body_rule is exited.
-func (s *BaseFlexarListener) ExitClass_body_rule(ctx *Class_body_ruleContext) {}
 
 // EnterClass_attribute is called when production class_attribute is entered.
 func (s *BaseFlexarListener) EnterClass_attribute(ctx *Class_attributeContext) {}

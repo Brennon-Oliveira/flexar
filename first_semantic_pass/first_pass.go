@@ -45,12 +45,14 @@ func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) *program
 func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *program_data.Namespace) interface{} {
 	className := ctx.NAME().GetText()
 
+	if namespace.ExistsClass(className) {
+		utils.SemanticError(ctx.NAME().GetSymbol().GetLine(), "Class "+className+" already exists in namespace "+namespace.Name)
+	}
+
 	class := namespace.AddClass(className)
 
-	for _, classRule := range ctx.Class_body().AllClass_body_rule() {
-		if classRule.(*parser.Class_body_ruleContext).Class_attribute() != nil {
-			v.VisitAttribute(classRule.(*parser.Class_body_ruleContext).Class_attribute().(*parser.Class_attributeContext), class)
-		}
+	for _, classAttribute := range ctx.Class_body().AllClass_attribute() {
+			v.VisitAttribute(classAttribute.(*parser.Class_attributeContext), class)
 	}
 
 	return nil
@@ -58,6 +60,10 @@ func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *progr
 
 func (v *FirstPassVisitor) VisitAttribute(ctx *parser.Class_attributeContext, class *program_data.Class) interface{} {
 	attributeName, attributeType := v.VisitVariableDeclaration(ctx.Variable_declaration().(*parser.Variable_declarationContext))
+
+	if class.ExistsAttribute(attributeName) {
+		utils.SemanticError(ctx.Variable_declaration().(*parser.Variable_declarationContext).NAME().GetSymbol().GetLine(), "Attribute "+attributeName+" already exists in class "+class.Name)
+	}
 
 	attribute := program_data.Attribute{
 		Name:      attributeName,
