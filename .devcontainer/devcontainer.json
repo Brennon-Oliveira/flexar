@@ -1,0 +1,63 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/go .
+{
+	"name": "Flexar Lang",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"installGradle": true,
+			"version": "latest",
+			"jdkDistro": "ms",
+			"gradleVersion": "latest",
+			"mavenVersion": "latest",
+			"antVersion": "latest",
+			"groovyVersion": "latest"
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": false,
+			"version": "latest"
+		},
+		"ghcr.io/jsburckhardt/devcontainer-features/bat:1": {},
+		"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+			"defaultUser": true,
+			"setLocale": true,
+			"theme": "robbyrussell",
+			"plugins": "git docker",
+			"desiredLocale": "en_US.UTF-8 UTF-8"
+		},
+		"ghcr.io/nikiforovall/devcontainer-features/antlr4:1": {
+			"version": "4.13.0"
+		},
+		"ghcr.io/thediveo/devcontainer-features/lazygit:0": {}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "go version",
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go",
+				"aaron-bond.better-comments",
+				"github.vscode-github-actions",
+				"ms-vscode.vscode-github-issue-notebooks",
+				"GitHub.vscode-pull-request-github",
+				"GitHub.remotehub",
+				"yzhang.markdown-all-in-one",
+				"PKief.material-icon-theme",
+				"Gruntfuggly.todo-tree",
+				"redhat.vscode-yaml"
+			]
+		}
+	},
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "root"
+}
