@@ -1,0 +1,7 @@
+pip install antlr4-tools
+
+antlr4 -visitor -Dlanguage=Go .\Flexar.g4 -o .\parser
+ou
+java ./antlr-4.13.1-complete.jar -Dlanguage=Go -visitor .\Flexar.g4 -o .\parser
+
+java org.antlr.v4.Tool -Dlanguage=Go -visitor .\grammar\Flexar.g4 -o .\parser

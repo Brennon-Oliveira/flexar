@@ -1,9 +1,0 @@
-IMPORT=1
-NAMESPACE=2
-FUNC=3
-CLASS=4
-WS=5
-'import'=1
-'namespace'=2
-'func'=3
-'class'=4
