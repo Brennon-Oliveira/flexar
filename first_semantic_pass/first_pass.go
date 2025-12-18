@@ -11,31 +11,16 @@ type FirstPassVisitor struct {
 	antlr.ParseTreeVisitor
 }
 
-func Visit(ctx antlr.ParseTree) {
+func Visit(ctx antlr.ParseTree) *program_data.Application {
+	app := program_data.NewApplication()
 	visitor := &FirstPassVisitor{}
-	visitor.VisitProgram(ctx.(*parser.ProgramContext))
+	visitor.VisitProgram(ctx.(*parser.ProgramContext), app)
+
+	return app
 }
 
-func (v *FirstPassVisitor) VisitProgram(ctx *parser.ProgramContext) interface{} {
-	namespace := v.VisitNamespace(ctx.Namespace().(*parser.NamespaceContext))
-	for _, programRule := range ctx.AllProgram_rule() {
-		v.VisitProgramRule(programRule.(*parser.Program_ruleContext), namespace)
-	}
-	return nil
-}
-
-func (v *FirstPassVisitor) VisitProgramRule(ctx *parser.Program_ruleContext, namespace *program_data.Namespace) interface{} {
-	if ctx.Func_() != nil {
-		v.VisitFunc(ctx.Func_().(*parser.FuncContext), ctx.EXPORT() != nil, namespace)
-	}
-	if ctx.Class() != nil {
-		v.VisitClass(ctx.Class().(*parser.ClassContext), namespace)
-	}
-	return nil
-}
-
-func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext) *program_data.Namespace {
-	namespace := program_data.GetNamespace(ctx.Namespace_name().GetText())
+func (v *FirstPassVisitor) VisitNamespace(ctx *parser.NamespaceContext, app *program_data.Application) *program_data.Namespace {
+	namespace := app.GetNamespace(ctx.Namespace_name().GetText())
 
 	namespace.AddFile(utils.GetCurrentFile())
 
@@ -52,7 +37,7 @@ func (v *FirstPassVisitor) VisitClass(ctx *parser.ClassContext, namespace *progr
 	class := namespace.AddClass(className)
 
 	for _, classAttribute := range ctx.Class_body().AllClass_attribute() {
-			v.VisitAttribute(classAttribute.(*parser.Class_attributeContext), class)
+		v.VisitAttribute(classAttribute.(*parser.Class_attributeContext), class)
 	}
 
 	return nil

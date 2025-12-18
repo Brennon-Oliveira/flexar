@@ -456,6 +456,8 @@ SPREAD
 
 // Number
 
+// TODO: Handling negative numbers in the lexer causes ambiguity with subtraction (e.g. "1-1").
+// Handle unary minus in the parser instead.
 INT_NUM
     : [-]? [0-9]+
     ;
@@ -627,6 +629,9 @@ enum_attribute
 
 // Expression
 
+// TODO: The separation between 'expression' and 'expression_math' is problematic and prevents
+// using arbitrary expressions (like comparisons) inside math expressions (e.g. via parentheses).
+// Consider a unified expression rule with precedence levels.
 expression
     : class_new_instance
     | func_call

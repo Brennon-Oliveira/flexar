@@ -7,34 +7,10 @@ type Namespace struct {
 	Classes   map[string]*Class
 }
 
-func GetNamespace(name string) *Namespace {
-	n, ok := namespaces[name]
-	if !ok {
-		namespace := Namespace{
-			Name:      name,
-			Files:     []string{},
-			Functions: map[string]*Function{},
-			Classes:   map[string]*Class{},
-		}
-		namespaces[name] = &namespace
-
-		return &namespace
-	}
-
-	return n
-}
-
 func (n *Namespace) AddFile(file string) {
 	n.Files = append(n.Files, file)
+	// TODO: CRITICAL BUG. This wipes out existing functions and classes when adding a new file to an existing namespace.
+	// Initialize these only if they are nil.
 	n.Functions = make(map[string]*Function)
 	n.Classes = make(map[string]*Class)
-}
-
-func ExistsNamespace(name string) bool {
-	_, ok := namespaces[name]
-	return ok
-}
-
-func GetNamespaces() map[string]*Namespace {
-	return namespaces
 }

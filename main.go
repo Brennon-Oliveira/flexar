@@ -10,16 +10,7 @@ import (
 	"github.com/Brennon-Oliveira/flexar/utils"
 )
 
-func main() {
-	// receive file path as argument
-
-	if len(os.Args) < 2 {
-		fmt.Println("You must provide a path as argument")
-		return
-	}
-
-	projectPath := os.Args[1]
-
+func NavigateInProject(projectPath string) ([]string, error){
 	files := []string{}
 
 	// check if path is a flexar file (.fl)
@@ -29,17 +20,28 @@ func main() {
 		if info, err := os.Stat(projectPath); err == nil && info.IsDir() {
 			compilation.FindFiles(projectPath, &files)
 		} else {
-			fmt.Println("Invalid path")
-			return
+			return nil, fmt.Errorf("Invalid path")
 		}
 	} else {
 		// check if file exists
 		if _, err := os.Stat(projectPath); os.IsNotExist(err) {
-			fmt.Println("File does not exist")
-			return
+			return nil, fmt.Errorf("File does not exist")
 		}
 		files = append(files, projectPath)
 	}
+
+	return files, nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("You must provide a path as argument")
+		return
+	}
+
+	projectPath := os.Args[1]
+
+	
 
 	for _, file := range files {
 		utils.SetCurrentFile(file)
